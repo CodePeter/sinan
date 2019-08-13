@@ -1,0 +1,5 @@
+rootProject.name = 'sinan'
+include 'os'
+include 'rpc'
+include 'lesson'
+

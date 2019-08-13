@@ -1,0 +1,43 @@
+buildscript{
+    ext {
+        springBootVersion = '2.1.0.RELEASE'
+    }
+    repositories {
+        mavenLocal()
+        maven { url "http://dl.bintray.com/cjstehno/public" }
+        maven { url "http://maven.aliyun.com/nexus/content/groups/public/" }
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.sinan.groovy:templates:1.0-SNAPSHOT'
+    }
+}
+
+allprojects {
+    ext {
+        //项目名
+        projectName = "sinan" //需要自己填写
+        //项目类包
+        classPackage = "com.sinan" //需要自己填写
+        //项目版本
+        version = "1.1.0" //需要自己填写
+        appId = "sinan" //用于统一配置中心唯一标识，可以与projectName一致
+    }
+    repositories {
+        mavenLocal()
+        maven { url "http://dl.bintray.com/cjstehno/public" }
+        maven { url "http://maven.aliyun.com/nexus/content/groups/public/" }
+        mavenCentral()
+    }
+    apply plugin: "java"
+    apply plugin: 'idea'
+
+    sourceCompatibility = 1.8
+    [compileJava, compileTestJava, javadoc]*.options*.encoding = 'UTF-8'
+
+    configurations {
+        compile.exclude module: 'spring-boot-starter-logging'
+        all*.exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+
+    }
+}
