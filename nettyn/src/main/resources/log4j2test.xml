@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="info">
+    <Properties>
+        <Property name="rootDir">E:/logs/com-sinan-nettyn</Property>
+        <Property name="pattern">[%d{yyyy-MM-dd HH:mm:ss.SSS}] %-5level %class{36} -%L -%M - %msg%xEx%n</Property>
+    </Properties>
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <ThresholdFilter level="info"/>
+            <PatternLayout pattern="${pattern}"/>
+        </Console>
+        <RollingFile name="InfoRollingFile"
+                  fileName="${rootDir}/com-sinan-nettyn-${sys:localIp}-info.log" append="true"
+                  filePattern="${rootDir}/com-sinan-nettyn-info-%d{yyyy-MM-dd}-%i.log">
+            <Filters>
+                <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY" />
+            </Filters>
+            <PatternLayout pattern="${pattern}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy />
+                <SizeBasedTriggeringPolicy size="500MB" />
+            </Policies>
+        </RollingFile>
+        <RollingFile name="ErrorRollingFile"
+                  fileName="${rootDir}/com-sinan-nettyn-${sys:localIp}-error.log" append="true"
+                  filePattern="${rootDir}/com-sinan-nettyn-${sys:localIp}-error-%i.log">
+            <Filters>
+                <ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY" />
+            </Filters>
+            <PatternLayout pattern="${pattern}"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="500MB" />
+            </Policies>
+            <DefaultRolloverStrategy max="10"/>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+<!--        <Logger name="org.springframework" level="INFO"></Logger>-->
+<!--        <Logger name="org.apache.tomcat" level="INFO"></Logger>-->
+        <Root level="info">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="InfoRollingFile"/>
+            <AppenderRef ref="ErrorRollingFile"/>
+        </Root>
+    </Loggers>
+</Configuration>

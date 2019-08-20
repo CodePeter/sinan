@@ -1,0 +1,52 @@
+//buildscript{
+//    ext {
+//    }
+//    repositories {
+//        mavenLocal()
+//        maven { url "http://maven.aliyun.com/nexus/content/groups/public/" }
+//        maven { url "http://dl.bintray.com/cjstehno/public" }
+//        mavenCentral()
+//    }
+//    dependencies {
+//    }
+//}
+
+apply plugin: 'java'
+
+group 'com.sinan'
+version '1.0-SNAPSHOT'
+
+//sourceSets {
+//    main {
+//        java { srcDirs = [ 'src/main/java'] }
+//        resources { srcDirs = [ 'src/main/resources',  "env/$env"] }
+//    }
+//    test {
+//        java { srcDirs = [ 'src/test/java' ] }
+//        resources { srcDirs = [ 'src/test/resources'] }
+//    }
+//}
+
+repositories {
+    mavenLocal()
+    maven { url "http://maven.aliyun.com/nexus/content/groups/public" }
+    maven { url "http://dl.bintray.com/cjstehno/public" }
+    mavenCentral()
+}
+
+dependencies {
+    compile('org.apache.logging.log4j:log4j-slf4j-impl:2.12.1')
+    compile('org.apache.logging.log4j:log4j-core:2.8.2')
+    compile('org.apache.logging.log4j:log4j-api:2.8.2')
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.9.9'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.9.2'
+    compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jdk8', version: '2.9.9'
+    compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.9.9'
+    compile('org.apache.commons:commons-lang3:3.9')
+    compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.9'
+    compile 'com.google.code.findbugs:jsr305:3.0.2'
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+    compile group: 'io.netty', name: 'netty-all', version: '4.1.38.Final'
+//    compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.12.1'
+//    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.12.1'
+}
