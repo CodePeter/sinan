@@ -1,0 +1,56 @@
+apply plugin: 'java'
+apply plugin: 'war' // 引入war插件, 它默认包含java插件
+
+group 'com.sinan'
+version '1.0-SNAPSHOT'
+
+ext {
+    springVersion = '5.1.9.RELEASE'
+}
+
+buildscript{
+    ext {
+    }
+    repositories {
+        mavenLocal()
+        maven { url "http://maven.aliyun.com/nexus/content/groups/public/" }
+        maven { url "http://dl.bintray.com/cjstehno/public" }
+        mavenCentral()
+        jcenter()
+    }
+    dependencies {
+    }
+}
+
+//sourceSets {
+//    main {
+//        java { srcDirs = [ 'src/main/java'] }
+//        resources { srcDirs = [ 'src/main/resources',  "env/$env"] }
+//    }
+//    test {
+//        java { srcDirs = [ 'src/test/java' ] }
+//        resources { srcDirs = [ 'src/test/resources'] }
+//    }
+//}
+
+repositories {
+    mavenLocal()
+    maven { url "http://maven.aliyun.com/nexus/content/groups/public" }
+    maven { url "http://dl.bintray.com/cjstehno/public" }
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+    providedCompile group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.1'
+    runtime 'javax.servlet:jstl:1.1.2'
+
+    // spring
+    compile "org.springframework:spring-core:${springVersion}"
+    compile "org.springframework:spring-jdbc:${springVersion}"
+    compile "org.springframework:spring-context:${springVersion}"
+    compile "org.springframework:spring-context-support:${springVersion}"
+    compile "org.springframework:spring-aop:${springVersion}"
+}
+
+
