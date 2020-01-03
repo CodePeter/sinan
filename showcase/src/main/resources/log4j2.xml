@@ -1,0 +1,49 @@
+<Configuration status="WARN" strict="true" name="log4j2"
+	packages="com.zhaopin.logging.layout">
+	<Properties>
+		<Property name="rootDir">E:/work/logs/java-cam-xuexifang-web</Property>
+		<Property name="pattern">[%d{yyyy-MM-dd HH:mm:ss.SSS}] %-5level %class{36} -%L -%M - %msg%xEx%n</Property>
+	</Properties>
+	<Appenders>
+		<Console name="Console" target="SYSTEM_OUT">
+			<ThresholdFilter level="info"/>
+			<PatternLayout pattern="${pattern}"/>
+		</Console>
+		<!--<Appender type="RollingFile" name="InfoRollingFile"-->
+			<!--fileName="${rootDir}/java-cam-xuexifang-impl-${sys:localip}-info.log" append="true"-->
+			<!--filePattern="${rootDir}/java-cam-xuexifang-impl-info-%d{yyyy-MM-dd}-%i.log">-->
+			<!--<Filters>-->
+ 				<!--<ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY" />-->
+ 			<!--</Filters>-->
+			<!--&lt;!&ndash;<PatternLayout pattern="${pattern}"/>&ndash;&gt;-->
+			<!--<Layout type="ZhaopinLayout"/>-->
+			<!--<Policies>-->
+				<!--<TimeBasedTriggeringPolicy />-->
+				<!--<SizeBasedTriggeringPolicy size="500MB" />-->
+			<!--</Policies>-->
+		<!--</Appender>-->
+		<!--<Appender type="RollingFile" name="ErrorRollingFile" fileName="${rootDir}/${projectName}/${projectName}-${sys:localIp}-error.log"-->
+				  <!--append="true" filePattern="${rootDir}/${projectName}/${projectName}-${sys:localIp}-error-%i.log">-->
+			<!--<Filters>-->
+				<!--<ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY" />-->
+			<!--</Filters>-->
+			<!--&lt;!&ndash;<PatternLayout pattern="${pattern}"/>&ndash;&gt;-->
+			<!--<Layout type="ZhaopinLayout"/>-->
+			<!--<Policies>-->
+				<!--<SizeBasedTriggeringPolicy size="500MB" />-->
+			<!--</Policies>-->
+			<!--<DefaultRolloverStrategy max="10"/>-->
+		<!--</Appender>-->
+	</Appenders>
+	<Loggers>
+		<Logger name="org.springframework" level="INFO"></Logger>
+		<Logger name="org.apache.tomcat" level="INFO"></Logger>
+		<Logger name="org.nutz.dao" level="DEBUG"></Logger>
+		<root level="info">
+			<AppenderRef ref="Console"/>
+			<!--<appender-ref ref="Console"></appender-ref>-->
+			<!--<appender-ref ref="InfoRollingFile"></appender-ref>-->
+			<!--<appender-ref ref="ErrorRollingFile"></appender-ref>-->
+		</root>
+	</Loggers>
+</Configuration>

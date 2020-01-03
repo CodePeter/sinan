@@ -12,18 +12,32 @@
 //}
 
 apply plugin: 'java'
+//apply plugin: "maven"
 
 group 'com.sinan'
 version '1.0-SNAPSHOT'
 
-//sourceSets {
-//    main {
-//        java { srcDirs = [ 'src/main/java'] }
-//        resources { srcDirs = [ 'src/main/resources',  "env/$env"] }
-//    }
-//    test {
-//        java { srcDirs = [ 'src/test/java' ] }
-//        resources { srcDirs = [ 'src/test/resources'] }
+buildDir = 'out'
+
+sourceSets {
+    main {
+        java {
+            srcDirs = [ 'src/main/java']
+//            include '**/*.txt'
+        }
+//        resources { srcDirs = [ 'src/main/java', 'src/main/resources'] }
+        resources { srcDirs = [ 'src/main/resources'] }
+    }
+    test {
+        java { srcDirs = [ 'src/test/java' ] }
+        resources { srcDirs = [ 'src/test/resources'] }
+    }
+}
+
+
+//processResources {
+//    from('src/main/java') {
+//        include '**/*.*'
 //    }
 //}
 
@@ -46,4 +60,70 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
 //    compile 'org.apache.httpcomponents:httpcore:4.4.11'
     compile 'org.apache.httpcomponents:httpmime:4.5.6'
+}
+
+task showBuildDir {
+    doLast {
+        println buildDir
+        println SourceSet.name
+        println distsDirName
+        println sourceSets.main.output.classesDir
+        println sourceSets.main.output.resourcesDir
+        println compileJava.destinationDir
+        println processResources.destinationDir
+        println "$name"
+        println "$buildDir"
+    }
+}
+
+group 'com.sinan'
+task showInfo << {
+    println "$group"
+    println "$version"
+    println buildDir
+    println name
+    println project.group
+}
+
+task printVersion << {
+    println "Version: $version"
+}
+
+
+class ProjectVersion {
+    Integer major
+    Integer minor
+    Boolean release
+    ProjectVersion(Integer major, Integer minor) {
+        this.major = major
+        this.minor = minor
+        this.release = Boolean.FALSE
+    }
+    
+    ProjectVersion(Integer major, Integer minor, Boolean release) {
+        this(major, minor)
+        this.release = release
+    }
+
+    @Override
+    String toString() {
+        "$major.$minor${release ? '' : '-SNAPSHOT'}"
+    }
+}
+
+version = new ProjectVersion(0, 1)
+ext.versionFile = file('version.properties')
+task loadVersion {
+    project.version = readVersion()
+}
+ProjectVersion readVersion() {
+    logger.quiet 'Reading the version file.'
+    if(!versionFile.exists()) {
+        throw new GradleException("Required version file dose not exits: $versionFile.canonicalPath")
+    }
+    Properties versionProps = new Properties()
+    versionFile.withInputStream {
+        stream -> versionProps.load(stream)
+    }
+    new ProjectVersion(versionProps.major.toInteger(), versionProps.minor.toInteger(), versionProps.release.toBoolean())
 }
