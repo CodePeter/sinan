@@ -12,12 +12,13 @@
 //}
 
 apply plugin: 'java'
+apply plugin: 'war'
 //apply plugin: "maven"
 
 group 'com.sinan'
 version '1.0-SNAPSHOT'
 
-buildDir = 'out'
+//buildDir = 'out'
 
 sourceSets {
     main {
@@ -83,6 +84,9 @@ task showInfo << {
     println buildDir
     println name
     println project.group
+    println projectDir
+    println project.distsDir
+    println war.archivePath
 }
 
 task printVersion << {
@@ -99,7 +103,7 @@ class ProjectVersion {
         this.minor = minor
         this.release = Boolean.FALSE
     }
-    
+
     ProjectVersion(Integer major, Integer minor, Boolean release) {
         this(major, minor)
         this.release = release
@@ -126,4 +130,47 @@ ProjectVersion readVersion() {
         stream -> versionProps.load(stream)
     }
     new ProjectVersion(versionProps.major.toInteger(), versionProps.minor.toInteger(), versionProps.release.toBoolean())
+}
+
+task makeReleaseVersion() {
+    inputs.property('release', version.release)
+    outputs.file versionFile
+
+    doLast {
+        version.release = true
+        ant.propertyfile(file: versionFile) {
+            entry(key: 'release', type: 'string', operation: '=', value: 'true')
+        }
+    }
+
+}
+
+//task makeReleaseVersion() << {
+//    version.release = true
+//    ant.propertyfile(file: versionFile) {
+//        entry(key: 'release', type: 'string', operation: '=', value: 'true')
+//    }
+//}
+
+task createDistribution(type: Zip, dependsOn: makeReleaseVersion) {
+    from war.outputs.files
+    println war.outputs.files.singleFile
+//    println war.archiveName
+    from(sourceSets*.allSource) {
+        into 'src'
+    }
+    from(rootDir) {
+        include versionFile.name
+    }
+    println rootDir
+}
+
+task backupReleaseDistribution(type: Copy) {
+    from createDistribution.outputs.files
+    into "$buildDir/backup"
+    println createDistribution.outputs.files.singleFile
+}
+
+task release(dependsOn: backupReleaseDistribution) << {
+    logger.quiet 'Release the project...'
 }
